@@ -670,7 +670,13 @@ struct MishFunctor
             for( int i = 0; i < len; i++ )
             {
                 float x = srcptr[i];
-                dstptr[i] = x * tanh(log(1.0f + exp(x)));
+		if (x > 8.f)
+                    dstptr[i] = x;
+                else {
+                    float eX = exp(x);
+                    float n = (eX + 2) * eX;
+                    dstptr[i] = (x * n) / (n + 2);
+                }
             }
         }
     }
